@@ -1,20 +1,14 @@
 <?php 
         include "header.php";
-        $filesDir = "./posts";
-        $files = scan_dir($filesDir);
+        require_once 'libs/Parsedown.php';
         
-
-        $filesContent = [];
+        $folersDirectory = "./posts";
+        $postFolders = scan_dir($folersDirectory);
         
-        foreach($files as &$item){
-            if($item !== "." && $item !== ".."){
-                $filesContent[$item] = file_get_contents($filesDir . '/' . $item);
-            }
-        }
+        $parsedown = new Parsedown();
         
-
         function scan_dir($dir) {
-            $ignored = array('.', '..', '.svn', '.htaccess');
+            $ignored = array('.', '..');
         
             $files = array();    
             foreach (scandir($dir) as $file) {
@@ -28,15 +22,16 @@
             return ($files) ? $files : false;
         }
     ?>
-  <div class="container">
+         
+<?php 
+        foreach($postFolders as &$folder){ 
+            $content = scan_dir($folersDirectory . "/" . $folder);
+            ?>
+        <div class="col-lg-12">
+            <h2><?php echo $folder ?></h2>
+            <p><?php echo $parsedown->text(file_get_contents($folersDirectory . "/" . $folder . "/brief.md")) ?></p>
+        </div>
+        <?php } ?>
 
-<?php include "footer.php"?>
 
-<?php foreach($files as &$item){ ?>
-<div class="col-lg-12">
-    <h2><?php echo $item ?></h2>
-    <p><?php echo $filesContent[$item] ?></p>
-</div>
-<?php } ?>
-
-</div>
+<php include "footer.php" />

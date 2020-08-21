@@ -37,6 +37,8 @@
           <a class="nav-link" href="#">About</a>
         </li>
       </ul>
+      
+    </div>
   </nav>
-  </div>
   <!-- Navbar- End -->
+  <div class="container">
